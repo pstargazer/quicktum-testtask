@@ -9,4 +9,8 @@ $bracket_end = '}';
 
 $success_case = new BracketsValidator("{{lajkdhf{adfa}{}adfasdfadf{}}}", $bracket_start, $bracket_end);
 $fail_case = new BracketsValidator("{{lajkdhf{adfa", $bracket_start, $bracket_end);
+
+$fail_case2 = new BracketsValidator('}{', $bracket_start, $bracket_end);
+$success_case2 = new BracketsValidator('{}', $bracket_start, $bracket_end);
+
 ?>

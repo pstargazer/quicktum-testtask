@@ -31,10 +31,31 @@ class BracketsValidator implements ValidationStrategy
      */
     public function isValid(string $input): bool
     {
-        $bracket_start_count = mb_substr_count($input, $this->bracket_start);
-        $bracket_end_count = mb_substr_count($input, $this->bracket_end);
+        $bracket_start_count = 0;
+        $bracket_end_count = 0;
+        // счетчик для парности и порядка строк (вложенность)
+        $unclosed = 0;
 
-        if($bracket_start_count === $bracket_end_count) return true;
+        for ($i = 0; $i < strlen($input); $i++) {
+            switch($input[$i]) {
+                case $this->bracket_start:
+                    $bracket_start_count += 1;
+                    $unclosed += 1;
+                    break;
+                    
+                case $this->bracket_end:
+                    // если } перед {
+                    if ($unclosed == 0) return false;
+                    $bracket_end_count += 1;
+                    $unclosed -= 1;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        // echo $unclosed;
+        if ($bracket_start_count === $bracket_end_count && $unclosed == 0) return true;
 
         return false;
     }
